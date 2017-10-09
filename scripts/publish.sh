@@ -22,7 +22,7 @@ done
 cp -rf ~/repo/dist/* .
 
 git add -A
-git commit --all --author "simonaco-circle" --message "bla ($CIRCLE_BUILD_NUM)"
+git commit --all --message "echo ($CIRCLE_BUILD_NUM)"
 
 # Push changes to Azure
 git push origin master
