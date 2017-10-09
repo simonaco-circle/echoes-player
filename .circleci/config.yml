@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:6-browsers
+    steps:
+      - add-ssh-keys:
+          fingerprints:
+            - "93:0b:f1:93:f3:69:ac:1d:ca:c0:52:ff:48:61:00:5c"
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: install-dependencies
+          command: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ./node_modules
+      - run:
+          name: angular-build
+          command: yarn ng -- build --prod --aot --no-progress
+      - run:
+          name: angular-test
+          command: yarn test -- --single-run --no-progress
+      - run:
+          name: angular-lint
+          command: yarn lint
+      # Deploy production
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then ./scripts/publish.sh production;
+            fi
