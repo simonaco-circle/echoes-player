@@ -25,9 +25,6 @@ jobs:
       - run:
           name: angular-test
           command: yarn test -- --single-run --no-progress
-      - run:
-          name: angular-lint
-          command: yarn lint
       # Deploy production
       - deploy:
           command: |
