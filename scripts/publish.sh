@@ -6,7 +6,6 @@ git config --global user.name simonaco-circle
 # and include both username and password, e.g: https://username:password@site.scm.azurewebsites.net:443/site.git
 
 # Clone Azure repository
-echo $AZURE_REPO_URL
 git clone $AZURE_REPO_URL ~/azure
 
 # change into the local azure directory
@@ -16,14 +15,14 @@ cd ~/azure
 rm -rf *
 
 # Copy /dist folder contents (our app)
-for entry in ~repo/*
+for entry in ~repo/dist/*
 do
   echo "$entry"
 done
 cp -rf ~/repo/dist/* .
 
 git add -A
-git commit --all --author "simonaco-circle simona.cotin@microsoft.com" --message "bla ($CIRCLE_BUILD_NUM)"
+git commit --all --author "simonaco-circle" --message "bla ($CIRCLE_BUILD_NUM)"
 
 # Push changes to Azure
 git push origin master
